@@ -55,8 +55,4 @@ jobs:
 
       - name: Run tests
         run: |
-          if [ -d backend/tests ]; then
-            pytest -q
-          else
-            echo "No tests directory found: skipping pytest"
-          fi
+          if [ -d backend/tests ]; then pytest -q; else echo "No tests found"; fi
