@@ -1,15 +1,15 @@
 import os
-import yaml
-
-from fastapi import FastAPI, Body, Depends, Header, HTTPException, Query
-from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
-from sqlalchemy import select, text
 from datetime import datetime, timezone
+
+import yaml
+from fastapi import Body, Depends, FastAPI, Header, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import select, text
+from sqlalchemy.orm import Session
 
 from .db import Base, engine, get_db
 from .models import Task
-from .schemas import TaskCreate, TaskUpdate, TaskOut
+from .schemas import TaskCreate, TaskOut, TaskUpdate
 
 API_KEY = "devsecops-demo-secret-<a_remplacer>"
 
@@ -31,9 +31,11 @@ Base.metadata.create_all(bind=engine)
 def debug():
     return {"env": dict(os.environ)}
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 @app.get("/admin/stats")
 def admin_stats(x_api_key: str | None = Header(default=None)):
@@ -41,10 +43,12 @@ def admin_stats(x_api_key: str | None = Header(default=None)):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return {"tasks": "…"}
 
+
 @app.post("/import")
 def import_yaml(payload: str = Body(embed=True)):
     data = yaml.full_load(payload)
     return {"imported": True, "keys": list(data.keys()) if isinstance(data, dict) else "n/a"}
+
 
 @app.get("/tasks", response_model=list[TaskOut])
 def list_tasks(db: Session = Depends(get_db)):

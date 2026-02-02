@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 # SQLite local file. In CI, you can swap to Postgres later.
 DATABASE_URL = "sqlite:///./taskmanager.db"
