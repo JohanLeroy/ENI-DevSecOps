@@ -125,11 +125,13 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: backend-trivy.sarif
+          category: trivy-backend
 
       - name: Upload frontend Trivy results
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: frontend-trivy.sarif
+          category: trivy-frontend
 
   validate-docker-compose:
     name: Validate Docker Compose
