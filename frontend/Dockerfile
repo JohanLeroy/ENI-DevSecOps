@@ -17,21 +17,18 @@ WORKDIR /usr/share/nginx/html
 COPY --from=builder /app .
 
 # Copier une configuration nginx pour le SPA
-RUN mkdir -p /etc/nginx/conf.d && \
-    cat > /etc/nginx/conf.d/default.conf << 'EOF'
+COPY <<EOF /etc/nginx/conf.d/default.conf
 server {
     listen 80;
     server_name _;
     root /usr/share/nginx/html;
     index index.html;
 
-    # Cache les assets statiques
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
 
-    # Fallback pour le SPA
     location / {
         try_files $uri /index.html;
     }
