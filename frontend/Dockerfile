@@ -17,7 +17,8 @@ WORKDIR /usr/share/nginx/html
 COPY --from=builder /app .
 
 # Copier une configuration nginx pour le SPA
-RUN cat > /etc/nginx/conf.d/default.conf << 'EOF'
+RUN mkdir -p /etc/nginx/conf.d && \
+    cat > /etc/nginx/conf.d/default.conf << 'EOF'
 server {
     listen 80;
     server_name _;
